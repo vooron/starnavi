@@ -1,42 +1,31 @@
 from rest_framework import generics
+from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 
-from blog.models import Post, PostLike, UserActivity
-from blog.serializers import PostSerializer, PostLikeSerializer, UserActivitySerializer
+from blog.models import Post
+from blog.serializers import PostSerializer, PostLikeSerializer
+from blog.services import LikesService
 
 
 class PostList(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticatedOrReadOnly,)
-    queryset = Post.objects.all()
+    queryset = Post.objects.all().order_by('id')
     serializer_class = PostSerializer
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
 
-class PostLikeList(generics.ListCreateAPIView):
-    permission_classes = (IsAuthenticatedOrReadOnly,)
-    queryset = PostLike.objects.all()
+class PostLikePerPostList(generics.ListCreateAPIView):
+    permission_classes = (IsAuthenticated,)
     serializer_class = PostLikeSerializer
 
+    service = LikesService()
+
     def get_queryset(self):
-        if "post_id" in self.kwargs:
-            print(f"Method PostLikeList.get_queryset was called with post_id={self.kwargs['post_id']}")
-            return PostLike.objects.filter(post_id=self.kwargs['post_id'])
-        else:
-            return self.queryset
+        # Not PostLike.objects.filter(post_id=self.kwargs['post_id']).order_by('id') because we will get OK(200)
+        # code even if the post is not exists
+        return get_object_or_404(Post, pk=self.kwargs['post_id']).postlike_set.order_by('id')
 
     def perform_create(self, serializer):
-        if "post_id" in self.kwargs:
-            print(f"Method PostLikeList.perform_create was called with post_id={self.kwargs['post_id']}")
-            serializer.save(post_id=self.kwargs['post_id'])
-        else:
-            serializer.save()
-
-
-class UserActivityPerUserList(generics.ListAPIView):
-    permission_classes = (IsAuthenticated,)
-    serializer_class = UserActivitySerializer
-
-    def get_queryset(self):
-        return UserActivity.objects.filter(user_id=self.kwargs['user_id'])
+        self.service.like_post(self.kwargs['post_id'], self.request.user, serializer)
