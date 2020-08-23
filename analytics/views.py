@@ -7,7 +7,7 @@ from analytics.serializers import UserActivitySerializer, AnalyticsSerializer, A
 from analytics.services import AnalyticsService
 
 
-class UserActivityPerUserList(generics.ListAPIView):
+class UserActivityPerUserListView(generics.ListAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = UserActivitySerializer
 
@@ -17,7 +17,7 @@ class UserActivityPerUserList(generics.ListAPIView):
         return self.service.get_user_activity_query_set(user_id=self.kwargs['user_id'])
 
 
-class AnalyticsList(views.APIView):
+class AnalyticsListView(views.APIView):
     permission_classes = (IsAuthenticated,)
 
     service = AnalyticsService()

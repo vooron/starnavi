@@ -7,7 +7,7 @@ from blog.serializers import PostSerializer, PostLikeSerializer
 from blog.services import LikesService
 
 
-class PostList(generics.ListCreateAPIView):
+class PostListView(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticatedOrReadOnly,)
     queryset = Post.objects.all().order_by('id')
     serializer_class = PostSerializer
@@ -16,7 +16,7 @@ class PostList(generics.ListCreateAPIView):
         serializer.save(author=self.request.user)
 
 
-class PostLikePerPostList(generics.ListCreateAPIView):
+class PostLikePerPostListView(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = PostLikeSerializer
 

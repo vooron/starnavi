@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import UserActivityPerUserList, AnalyticsList
+from .views import UserActivityPerUserListView, AnalyticsListView
 
 urlpatterns = [
-    path(r'users/<int:user_id>/activity/', UserActivityPerUserList.as_view()),  # TODO: review access
-    path(r'analytics/', AnalyticsList.as_view())
+    path(r'users/<int:user_id>/activity/', UserActivityPerUserListView.as_view()),  # TODO: review access
+    path(r'analytics/', AnalyticsListView.as_view())
 ]
