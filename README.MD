@@ -20,3 +20,4 @@ The server in development mode and not ready to be deployed (this wasn't specifi
 You can also create a superuser account if needed (admin part is available).
 
 You can find a bot, that perform queries in _bot folder. 
+NOTE: if your port:8000 is already in use, please, change the host address in _bot.main to a valid value.
