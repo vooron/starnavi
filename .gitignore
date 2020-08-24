@@ -1,2 +1,11 @@
+# Env
 venv
+
+# Python optimized
 __pycache__/
+
+# IDE
+.idea
+
+# Dev
+*.sqlite3
