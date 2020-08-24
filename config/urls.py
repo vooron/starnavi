@@ -1,7 +1,10 @@
 from django.contrib import admin
 from django.urls import path, include
 
-from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 
 urlpatterns = [
@@ -11,6 +14,6 @@ urlpatterns = [
     path('api/', include('analytics.urls')),
 
     path('api/auth/', include('users.urls')),
-    path('api/auth/login/', obtain_jwt_token),
-    path('api/auth/refresh/', refresh_jwt_token)
+    path('api/auth/login/', TokenObtainPairView.as_view()),
+    path('api/auth/refresh/', TokenRefreshView.as_view())
 ]
