@@ -56,7 +56,6 @@ class SignInUserCommand(ServerManipulationCommand):
 
 
 class CreateRandomPostCommand(Command):
-
     TITLE_LENGTH: int = 10
     CONTENT_LENGTH: int = 10
 
@@ -80,7 +79,6 @@ class CreateRandomPostCommand(Command):
 
 
 class LikePostCommand(Command):
-
     TARGET_PATH: str = 'posts/{}/likes/'
 
     def execute(self, request: dict) -> dict:
